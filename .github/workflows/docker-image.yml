@@ -26,6 +26,14 @@ jobs:
         echo "Iniciando login"
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
         echo " login"
+
+    - name: Build de la imagen de docker
+      run: |
+        docker build -t yancuadro/nest-graphql:1.0.0 .
+
+    - name: Push de la imagen
+      run: |
+        docker push yancuadro/nest-graphql:1.0.0
       
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
