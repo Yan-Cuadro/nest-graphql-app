@@ -39,14 +39,14 @@ jobs:
       env:
         NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker build -t yancuadro/nest-graphql:NEW_VERSION .
+        docker build -t yancuadro/nest-graphql:$NEW_VERSION .
         docker build -t yancuadro/nest-graphql .
 
     - name: Push de la imagen
       env:
         NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker push yancuadro/nest-graphql:NEW_VERSION
+        docker push yancuadro/nest-graphql:$NEW_VERSION
         docker push yancuadro/nest-graphql
       
     # - name: Build the Docker image
