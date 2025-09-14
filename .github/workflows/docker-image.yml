@@ -30,22 +30,24 @@ jobs:
       env: 
         DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
         echo "Iniciando login"
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
         echo "Fin del login"
-        echo "New version $NEW_VERSION!!!!!!!!"
 
-    # - name: Build de la imagen de docker
-    #   run: |
-    #     docker build -t yancuadro/nest-graphql:1.0.0 .
-    #     docker build -t yancuadro/nest-graphql .
+    - name: Build de la imagen de docker
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker build -t yancuadro/nest-graphql:NEW_VERSION .
+        docker build -t yancuadro/nest-graphql .
 
-    # - name: Push de la imagen
-    #   run: |
-    #     docker push yancuadro/nest-graphql:1.0.0
-    #     docker push yancuadro/nest-graphql
+    - name: Push de la imagen
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        docker push yancuadro/nest-graphql:NEW_VERSION
+        docker push yancuadro/nest-graphql
       
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
