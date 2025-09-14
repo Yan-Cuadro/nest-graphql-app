@@ -18,24 +18,34 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Git Semantic Version
+      uses: PaulHatch/semantic-version@v4.0.3
+      with: 
+        major_pattern: "major:"
+        minor_pattern: "feat:"
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
+      id: version
+
     - name: Docker login
       env: 
         DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
         echo "Iniciando login"
         docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
-        echo " login"
+        echo "Fin del login"
+        echo "New version $NEW_VERSION!!!!!!!!"
 
-    - name: Build de la imagen de docker
-      run: |
-        docker build -t yancuadro/nest-graphql:1.0.0 .
-        docker build -t yancuadro/nest-graphql .
+    # - name: Build de la imagen de docker
+    #   run: |
+    #     docker build -t yancuadro/nest-graphql:1.0.0 .
+    #     docker build -t yancuadro/nest-graphql .
 
-    - name: Push de la imagen
-      run: |
-        docker push yancuadro/nest-graphql:1.0.0
-        docker push yancuadro/nest-graphql
+    # - name: Push de la imagen
+    #   run: |
+    #     docker push yancuadro/nest-graphql:1.0.0
+    #     docker push yancuadro/nest-graphql
       
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
